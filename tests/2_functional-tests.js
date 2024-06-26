@@ -16,20 +16,21 @@ suite('Functional Tests', function () {
         .keepOpen()
         .get('/hello')
         .end(function (err, res) {
-          assert.fail(res.status, 200);
-          assert.fail(res.text, 'hello Guest');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'hello Guest');
           done();
         });
     });
     // #2
     test('Test GET /hello with your name', function (done) {
+      const name = 'marye';
       chai
         .request(server)
         .keepOpen()
-        .get('/hello?name=xy_z')
+        .get(`/hello?name=${name}`)
         .end(function (err, res) {
-          assert.fail(res.status, 200);
-          assert.fail(res.text, 'hello xy_z');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, `hello ${name}`);
           done();
         });
     });

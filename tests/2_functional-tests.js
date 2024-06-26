@@ -51,30 +51,33 @@ suite('Functional Tests', function () {
     // #4
     test('Send {surname: "da Verrazzano"}', function (done) {
       chai
-      .request(server)
-      .keepOpen()
-      .put('/travellers')
-      .send({ surname: 'da Verrazzano' })
-      .end(function (err, res) {
-        assert.equal(res.status, 200);
-        assert.equal(res.type, 'application/json');
-        assert.equal(res.body.name, 'Giovanni');
-        assert.equal(res.body.surname, 'da Verrazzano');
-        done();
-      });
+        .request(server)
+        .put('/travellers')
+        .send({ surname: 'da Verrazzano' })
+        .end(function (err, res) {
+          assert.equal(res.status, 200);
+          assert.equal(res.type, 'application/json');
+          assert.equal(res.body.name, 'Giovanni');
+          assert.equal(res.body.surname, 'da Verrazzano');
+          done();
+        });
     });
   });
 });
 
 const Browser = require('zombie');
+Browser.site = 'https://3000-marye94-freecodecampqac-snoump0ghf7.ws-us114.gitpod.io';
 
 suite('Functional Tests with Zombie.js', function () {
+  const browser = new Browser();
+  suiteSetup(function (done) {
+    return browser.visit('/', done);
+  });
+
   this.timeout(5000);
 
-
-
   suite('Headless browser', function () {
-    test('should have a working "site" property', function() {
+    test('should have a working "site" property', function () {
       assert.isNotNull(browser.site);
     });
   });
@@ -82,9 +85,13 @@ suite('Functional Tests with Zombie.js', function () {
   suite('"Famous Italian Explorers" form', function () {
     // #5
     test('Submit the surname "Colombo" in the HTML form', function (done) {
-      assert.fail();
-
-      done();
+      browser.fill('surname', 'Colombo').pressButton('submit', function () {
+        assert.ok(browser.success);
+        assert.equal(browser.text('span#name'), 'Cristoforo');
+        assert.equal(browser.text('span#surname'), 'Colombo');
+        done();
+      }
+      );
     });
     // #6
     test('Submit the surname "Vespucci" in the HTML form', function (done) {

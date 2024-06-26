@@ -118,7 +118,7 @@ suite('Unit Tests', function () {
     test('#match, #notMatch', function () {
       const regex = /^#\sname\:\s[\w\s]+,\sage\:\s\d+\s?$/;
       assert.match(formatPeople('John Doe', 35), regex);
-      assert.match(formatPeople('Paul Smith III', 'twenty-four'), regex);
+      assert.notMatch(formatPeople('Paul Smith III', 'twenty-four'), regex);
     });
   });
 

@@ -23,14 +23,13 @@ suite('Functional Tests', function () {
     });
     // #2
     test('Test GET /hello with your name', function (done) {
-      const name = 'marye';
       chai
         .request(server)
         .keepOpen()
-        .get(`/hello?name=${name}`)
+        .get('/hello?name=marye')
         .end(function (err, res) {
           assert.equal(res.status, 200);
-          assert.equal(res.text, `hello ${name}`);
+          assert.equal(res.text, 'hello marye');
           done();
         });
     });
